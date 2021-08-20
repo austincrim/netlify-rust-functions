@@ -7,6 +7,7 @@ type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
 
 #[lambda(http)]
 #[tokio::main]
-async fn main(_: Request, _: Context) -> Result<impl IntoResponse, Error> {
-    Ok("🦀 Hello, Netlify 🦀")
+async fn main(req: Request, _: Context) -> Result<impl IntoResponse, Error> {
+    let agent = req.headers().get("User-Agent").unwrap().to_str().unwrap();
+    Ok(format!("🦀 Hello, Netlify 🦀\n{}", agent))
 }
